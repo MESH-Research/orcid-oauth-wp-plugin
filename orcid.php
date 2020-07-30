@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: orcid
- * Plugin URI: http://orcid.joshia.msu.domains/
- * Description: Get ORCiD data.
+ * Plugin URI: http://orcid2.joshia.msu.domains/
+ * Description: Get ORCiD data using OAuth.
  * Version: 1.0
  * Author: Amaresh R. Joshi
  * Author URI: http://joshia.msu.domains/
