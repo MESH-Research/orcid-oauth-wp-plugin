@@ -116,7 +116,10 @@ function orcid_settings_form()
         //
         // user has not logged in yet so no code has been returned from ORCiD
         // provide a link to the ORCiD login
-        $orcid_request_uri = 'https://sandbox.orcid.org/oauth/authorize?' .
+
+        // sandbox api: 'https://sandbox.orcid.org/oauth/authorize?'
+        // public api:  'https://orcid.org/oauth/authorize?'
+        $orcid_request_uri = 'https://orcid.org/oauth/authorize?' .
             'client_id=' . ORCID_OAUTH_CLIENT_ID . '&' .
             'response_type=code&' .
             'scope=/authenticate&' .
