@@ -101,31 +101,32 @@ function orcid_data_function($atts) {
 	// get orcid data
 	//
 	// we can either download the data from orcid.org OR use the cached value
-	// we download the data IFF ($download_from_orcid_flag = TRUE)
+	// we download the data IFF ($download_from_orcid_flag = true)
 	// 1) there is no cached xml data
 	// 2) the cached value is older than ORCID_CACHE_TIMEOUT (in seconds)
 	//
-	$download_from_orcid_flag = FALSE;
+	$download_from_orcid_flag = false;
 	//
 	// 2) there is no cached xml data
-	if(empty(get_user_meta($author, '_orcid_xml', TRUE))){
-		$download_from_orcid_flag = TRUE;
+	if(empty(get_user_meta($author, '_orcid_xml', true))){
+		$download_from_orcid_flag = true;
 	}
 	//
 	// 3) the cached value is older than ORCID_CACHE_TIMEOUT (in seconds)
 	$current_time = time();
 	// last download time
-	$orcid_xml_download_time = intval(get_user_meta($author, '_orcid_xml_download_time', TRUE));
+	$orcid_xml_download_time = intval(get_user_meta($author, '_orcid_xml_download_time', true));
 	//
 	$time_diff = $current_time - $orcid_xml_download_time;
 	if($time_diff >= ORCID_CACHE_TIMEOUT){
-		$download_from_orcid_flag = TRUE;
+		$download_from_orcid_flag = true;
 	}
 
 	if($download_from_orcid_flag) {
 		// return '<p>Downloading XML data from orcid.org</p>' . PHP_EOL;
-		$orcid_id = get_user_meta($author, '_orcid_id', TRUE);
-		$orcid_xml = download_orcid_data($orcid_id);
+        $orcid_id = get_user_meta($author, '_orcid_id', true);
+        $orcid_access_token = get_user_meta($author, '_orcid_access_token', true);
+		$orcid_xml = download_orcid_data($orcid_id, $orcid_access_token);
 		update_user_meta($author, '_orcid_xml', $orcid_xml);
 		//
 		// keep track of when download occurred
@@ -134,9 +135,9 @@ function orcid_data_function($atts) {
 		// return '<p>Using cached XML data</p>' . PHP_EOL;
 		// return '<p>author WP id = ' . intval($author) . '</p>';
 		// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		$orcid_xml = get_user_meta($author, '_orcid_xml', TRUE);
+		$orcid_xml = get_user_meta($author, '_orcid_xml', true);
 	}
-	// $orcid_xml = get_user_meta($author, '_orcid_xml', TRUE);
+	// $orcid_xml = get_user_meta($author, '_orcid_xml', true);
 
 
 	//
