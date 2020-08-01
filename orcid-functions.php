@@ -8,10 +8,7 @@ include_once( plugin_dir_path( __FILE__ ) . 'orcid-oauth.php');
  * @param string $orcid_id - ORCiD ID
  * @return string $orcid_xml
  */
-function download_orcid_data($orcid_id, $orcid_access_token){
-    $user_ob = wp_get_current_user();
-    $user = $user_ob->ID;
-
+function download_orcid_data($user, $orcid_id, $orcid_access_token){
     $orcid_link = ORCID_URL . $orcid_id . "/record";
 
     $ch = curl_init();
@@ -95,7 +92,8 @@ function orcid_data_function($atts) {
 
 	//
 	// get the author's WordPress user id
-	$author = get_the_author_meta('ID', false);
+    // metadata is stored as strings so we need to convert to int
+    $author = intval(get_the_author_meta('ID', false));
 
 	//
 	// get orcid data
@@ -126,7 +124,7 @@ function orcid_data_function($atts) {
 		// return '<p>Downloading XML data from orcid.org</p>' . PHP_EOL;
         $orcid_id = get_user_meta($author, '_orcid_id', true);
         $orcid_access_token = get_user_meta($author, '_orcid_access_token', true);
-		$orcid_xml = download_orcid_data($orcid_id, $orcid_access_token);
+		$orcid_xml = download_orcid_data($author, $orcid_id, $orcid_access_token);
 		update_user_meta($author, '_orcid_xml', $orcid_xml);
 		//
 		// keep track of when download occurred

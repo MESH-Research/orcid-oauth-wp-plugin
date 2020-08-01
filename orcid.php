@@ -195,7 +195,7 @@ function orcid_settings_form()
             ') you have successfully logged into ORCiD.</p>';
         echo '<p>Your ORCiD profile will be available from MSU Commons.</p>';
 
-        $orcid_xml = download_orcid_data($orcid_token['orcid'], $orcid_token['access_token']);
+        $orcid_xml = download_orcid_data($user, $orcid_token['orcid'], $orcid_token['access_token']);
 
         // set which sections to display
         $display_sections['display_header'] = 'yes';
