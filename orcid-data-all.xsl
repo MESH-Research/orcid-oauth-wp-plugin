@@ -50,6 +50,7 @@
 
         <div id="orcid_data">
             <xsl:if test="$display_header='yes'">
+                <h2>
                 <div id="orcid_header">
                     <xsl:value-of select="record:record/person:person/person:name/personal-details:given-names"/>
                     <xsl:text> </xsl:text>
@@ -57,15 +58,16 @@
                     <xsl:text></xsl:text>
                     ORCID Profile
                 </div>
+                </h2>
             </xsl:if>
 
             <!-- START: personal -->
             <xsl:if test="$display_personal='yes'">
-                <div>Personal Information</div>
+                <h3><div>Personal Information</div></h3>
                 <!-- name -->
                 <div>
                     <xsl:if test="record:record/person:person/person:name">
-                        <div>Name Information</div>
+                        <h4><div>Name Information</div></h4>
                         <table border="1">
                             <tr bgcolor="#9acd32">
                                 <th>Field</th>
@@ -97,7 +99,7 @@
                 </div>
 
                 <!-- biography -->
-                <div>Biography</div>
+                <h4><div>Biography</div></h4>
                 <div>
                     <blockquote>
                         <xsl:choose>
@@ -167,7 +169,7 @@
 
             <!-- START: education -->
             <xsl:if test="$display_education='yes'">
-                <div>Education History</div>
+                <h3><div>Education History</div></h3>
                 <div>
                     <table border="1">
                         <tr bgcolor="#9acd32">
@@ -239,7 +241,7 @@
 
             <!-- START: employment -->
             <xsl:if test="$display_employment='yes'">
-                <div>Employment History</div>
+                <h3><div>Employment History</div></h3>
                 <div>
                     <table border="1">
                         <tr bgcolor="#9acd32">
@@ -307,7 +309,7 @@
 
             <!-- START: works (activities-group) -->
             <xsl:if test="$display_works='yes'">
-                <div>Academic Works History</div>
+                <h3><div>Academic Works History</div></h3>
                 <div>
                     <table border="1">
                         <tr bgcolor="#9acd32">
@@ -380,7 +382,7 @@
 
             <!-- START: fundings -->
             <xsl:if test="$display_fundings='yes'">
-                <div>Funding Sources</div>
+                <h3><div>Funding Sources</div></h3>
                 <div>
                     <table border="1">
                         <tr bgcolor="#9acd32">
@@ -431,7 +433,7 @@
 
             <!-- START: peer-reviews -->
             <xsl:if test="$display_peer_reviews='yes'">
-                <div>Peer Reviews</div>
+                <h3><div>Peer Reviews</div></h3>
                 <div>
                     <table border="1">
                         <tr bgcolor="#9acd32">
@@ -485,7 +487,7 @@
 
             <!-- START: invited_positions -->
             <xsl:if test="$display_invited_positions='yes'">
-                <div>Invited Positions</div>
+                <h3><div>Invited Positions</div></h3>
                 <div>
                     <table border="1">
                         <tr bgcolor="#9acd32">
@@ -523,7 +525,7 @@
 
             <!-- START: memberships -->
             <xsl:if test="$display_memberships='yes'">
-                <div>Memberships</div>
+                <h3><div>Memberships</div></h3>
                 <div>
                     <table border="1">
                         <tr bgcolor="#9acd32">
@@ -560,7 +562,7 @@
 
             <!-- START: qualifications -->
             <xsl:if test="$display_qualifications='yes'">
-                <div>Qualifications</div>
+                <h3><div>Qualifications</div></h3>
                 <div>
                     <table border="1">
                         <tr bgcolor="#9acd32">
@@ -603,7 +605,7 @@
                 we do know that there can be MULTIPLE <research-resource:research-resource-summary> within any <activities:group>
             -->
             <xsl:if test="$display_research_resources='yes'">
-                <div>Research Resources</div>
+                <h3><div>Research Resources</div></h3>
                 <div>
                     <table border="1">
                         <tr bgcolor="#9acd32">
@@ -667,7 +669,7 @@
 
             <!-- START: services -->
             <xsl:if test="$display_services='yes'">
-                <div>Services</div>
+                <h3><div>Services</div></h3>
                 <div>
                     <table border="1">
                         <tr bgcolor="#9acd32">
