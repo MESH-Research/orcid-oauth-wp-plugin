@@ -100,7 +100,7 @@ function orcid_settings_form()
         // user declined permission to share ORCiD data with MSU Commons
         echo '<p>You did not allow ORCiD to send your profile information to MSU Commons</p>';
         echo '<p>All your ORCiD related metadata will be removed from MSU Commons.</p>';
-        echo '<p>You can always return to this page and reconnect with ORCiD.</p>';
+        echo '<p>To reconnect yiur avcount with ORCiD you can revisit this page or press the ORCiD button below.</p>';
         //
         // delte any ORCiD related user metadata
         delete_user_meta($user, '_orcid_id');
@@ -109,31 +109,48 @@ function orcid_settings_form()
         delete_user_meta($user, '_orcid_xml_download_time');
 
         //
+        orcid_display_login_button();
         exit(0);
 
         } elseif (! isset($_GET['code']))
     {
-        //
-        // user has not logged in yet so no code has been returned from ORCiD
-        // provide a link to the ORCiD login
+        if (!(empty(get_user_meta($user, '_orcid_access_token', true)))
+            and
+            !(isset($_GET['code'])))
+        {
+            //
+            // user already has ORCiD metadata and does not require logging in
+            //
+            // we also have to make sure they are not reaching this point because
+            // they have pressed the ORCiD and have been redirected here from ORCiD
+            // this would indicate that theye have pressed the ORCiD button to force a data reload
+            //
+            echo '<p>You have previously connected your MSU Commons account with ORCiD.';
+            echo 'You do not need to login again to ORCiD unless:</p>';
+            echo '<ol>';
+            echo '<li>You want to turn off your making your ORCiD data with MSU Commons.';
+            echo '<li>You want MSU Commons to immediately update your ORCiD data.';
+            echo '</ol>';
+            echo '<p>If that is the case you may press ORCiD the button below to continue</p>';
 
-        // sandbox api: 'https://sandbox.orcid.org/oauth/authorize?'
-        // public api:  'https://orcid.org/oauth/authorize?'
-        $orcid_request_uri = 'https://orcid.org/oauth/authorize?' .
-            'client_id=' . ORCID_OAUTH_CLIENT_ID . '&' .
-            'response_type=code&' .
-            'scope=/authenticate&' .
-            'redirect_uri=' . ORCID_OAUTH_REDIRECT_URI;
+            orcid_display_login_button();
+            $orcid_xml = get_user_meta($user, '_orcid_xml', true);
+            orcid_display_orcid_data($orcid_xml);
+            exit(0);
 
-        // orcid suggested we use their button image since it is easily recognizable
-        echo "<a href=\"$orcid_request_uri\">" . ORCID_LOGIN_BUTTON_URI . '</a>';
-        //
-        exit(0);
+        } else {
+            //
+            // user has not logged in yet so no code has been returned from ORCiD
+            // provide a link to the ORCiD login
+
+            echo '<p>Please click the button below to link your MSU Commons with ORCiD.</p>';
+            orcid_display_login_button();
+            exit(0);
+        }
         /************************************************************/
 
     } elseif (isset($_GET['code']))
     {
-        $foo = 1;
         /************************************************************/
         //
         // user has returned from ORCiD.
@@ -197,22 +214,7 @@ function orcid_settings_form()
 
         $orcid_xml = download_orcid_data($user, $orcid_token['orcid'], $orcid_token['access_token']);
 
-        // set which sections to display
-        $display_sections['display_header'] = 'yes';
-        $display_sections['display_personal'] = 'yes';
-        $display_sections['display_education'] = 'yes';
-        $display_sections['display_employment'] = 'yes';
-        $display_sections['display_works'] = 'yes';
-        $display_sections['display_fundings'] = 'yes';
-        $display_sections['display_peer_reviews'] = 'yes';
-        $display_sections['display_invited_positions'] = 'yes';
-        $display_sections['display_memberships'] = 'yes';
-        $display_sections['display_qualifications'] = 'yes';
-        $display_sections['display_research_resources'] = 'yes';
-        $display_sections['display_services'] = 'yes';
-
-        $orcid_html = format_orcid_data_as_html($orcid_xml, $display_sections);
-        echo $orcid_html;
+        orcid_display_orcid_data($orcid_xml);
 
         exit(0);
         /************************************************************/

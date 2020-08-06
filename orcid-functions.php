@@ -208,6 +208,55 @@ function orcid_data_function($atts) {
 	return $return_string;
 }
 
+/**
+ *
+ * Display the ORCiD button on the current webpage
+ *
+ * parameters: none
+ *
+ */
+function orcid_display_login_button()
+{
+    // sandbox api: 'https://sandbox.orcid.org/oauth/authorize?'
+    // public api:  'https://orcid.org/oauth/authorize?'
+    $orcid_request_uri = 'https://orcid.org/oauth/authorize?' .
+        'client_id=' . ORCID_OAUTH_CLIENT_ID . '&' .
+        'response_type=code&' .
+        'scope=/authenticate&' .
+        'redirect_uri=' . ORCID_OAUTH_REDIRECT_URI;
+
+    // orcid suggested we use their button image since it is easily recognizable
+    echo "<a href=\"$orcid_request_uri\">" . ORCID_LOGIN_BUTTON_URI . '</a>';
+
+}
+
+/**
+ * Display the users ORCiD data
+ *
+ * parameters:
+ * @param $orcid_xml string - users ORCiD data
+ *
+ */
+function orcid_display_orcid_data($orcid_xml)
+{
+
+    // set which sections to display
+    $display_sections['display_header'] = 'yes';
+    $display_sections['display_personal'] = 'yes';
+    $display_sections['display_education'] = 'yes';
+    $display_sections['display_employment'] = 'yes';
+    $display_sections['display_works'] = 'yes';
+    $display_sections['display_fundings'] = 'yes';
+    $display_sections['display_peer_reviews'] = 'yes';
+    $display_sections['display_invited_positions'] = 'yes';
+    $display_sections['display_memberships'] = 'yes';
+    $display_sections['display_qualifications'] = 'yes';
+    $display_sections['display_research_resources'] = 'yes';
+    $display_sections['display_services'] = 'yes';
+
+    $orcid_html = format_orcid_data_as_html($orcid_xml, $display_sections);
+    echo $orcid_html;
+}
 // for testing
 //$orcidID = "0000-0003-0265-9119"; // Alan Munn
 //$orcidID = "0000-0003-1822-3109";  // Bronson Hui
