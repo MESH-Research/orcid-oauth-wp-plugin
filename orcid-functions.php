@@ -95,6 +95,15 @@ function orcid_data_function($atts) {
     // metadata is stored as strings so we need to convert to int
     $author = intval(get_the_author_meta('ID', false));
 
+    //************************************************
+    // if the user has disconnected her ORCID account
+    // from the commons we cannot proceed.
+    // in the case send back an error or blank string
+    if (empty(get_user_meta($author, '_orcid_id', true))) {
+        return "ORCiD data not available";
+    }
+
+
 	//
 	// get orcid data
 	//
@@ -121,7 +130,7 @@ function orcid_data_function($atts) {
 	}
 
 	if($download_from_orcid_flag) {
-		// return '<p>Downloading XML data from orcid.org</p>' . PHP_EOL;
+		// downloading data from ORCID
         $orcid_id = get_user_meta($author, '_orcid_id', true);
         $orcid_access_token = get_user_meta($author, '_orcid_access_token', true);
 		$orcid_xml = download_orcid_data($author, $orcid_id, $orcid_access_token);
@@ -130,12 +139,9 @@ function orcid_data_function($atts) {
 		// keep track of when download occurred
 		update_user_meta($author, '_orcid_xml_download_time', strval(time()));
 	} else {
-		// return '<p>Using cached XML data</p>' . PHP_EOL;
-		// return '<p>author WP id = ' . intval($author) . '</p>';
-		// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		// using cached data
 		$orcid_xml = get_user_meta($author, '_orcid_xml', true);
 	}
-	// $orcid_xml = get_user_meta($author, '_orcid_xml', true);
 
 
 	//
@@ -203,9 +209,7 @@ function orcid_data_function($atts) {
 	//
 	// format as HTML
 	$orcid_html = format_orcid_data_as_html($orcid_xml, $display_sections);
-	$return_string = $orcid_html;
-
-	return $return_string;
+	return $orcid_html;
 }
 
 /**

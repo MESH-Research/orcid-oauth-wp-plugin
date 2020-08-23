@@ -94,13 +94,26 @@ function orcid_settings_form()
 
     echo '<h1>MSU Commons ORCiD Profile Registration Setup</h1>';
 
+    echo '<hr>
+    <h2>What is ORCID?</h2>
+    <p>ORCID provides a persistent identifier - an ORCID iD - that<br> 
+    distinguishes you from other researchers and an ORCID record for linking<br>
+    your research  outputs and activities to your iD.<br>
+    Learn more at <a href="https://orcid.org/">orcid.org</a>.</p>';
+
+    echo '<p>By connecting your ORCID iD with MSU Commons,<br>
+    your profile information can be directly imported<br> 
+    from ORCID and displayed on your MSU Commons profile.</p><hr>';
+
+
     if (isset($_GET['error']))
     {
         //
         // user declined permission to share ORCiD data with MSU Commons
-        echo '<p>You did not allow ORCiD to send your profile information to MSU Commons</p>';
-        echo '<p>All your ORCiD related metadata will be removed from MSU Commons.</p>';
-        echo '<p>To reconnect yiur avcount with ORCiD you can revisit this page or press the ORCiD button below.</p>';
+        echo '<p>You did not allow ORCiD to send your profile information to MSU Commons.<br>
+        All your ORCiD related metadata will be removed from MSU Commons.<br>
+        To reconnect your account with ORCiD you can revisit this page or<br>
+        press the ORCiD button below.</p>';
         //
         // delte any ORCiD related user metadata
         delete_user_meta($user, '_orcid_id');
@@ -125,13 +138,12 @@ function orcid_settings_form()
             // they have pressed the ORCiD and have been redirected here from ORCiD
             // this would indicate that theye have pressed the ORCiD button to force a data reload
             //
-            echo '<p>You have previously connected your MSU Commons account with ORCiD.';
-            echo 'You do not need to login again to ORCiD unless:</p>';
-            echo '<ol>';
-            echo '<li>You want to turn off your making your ORCiD data with MSU Commons.';
-            echo '<li>You want MSU Commons to immediately update your ORCiD data.';
-            echo '</ol>';
-            echo '<p>If that is the case you may press ORCiD the button below to continue</p>';
+            echo '<p>You have previously connected your MSU Commons account with ORCiD.<br>
+            You do not need to login again to ORCiD unless you have made changes<br>
+            to your ORCID record and you want MSU Commons to immediately reload<br>
+            your data from ORCiD.</p>
+            <hr>
+            <p>Press the ORCiD the button below to reload your ORCiD data.</p>';
 
             orcid_display_login_button();
             $orcid_xml = get_user_meta($user, '_orcid_xml', true);
