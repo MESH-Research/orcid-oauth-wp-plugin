@@ -195,7 +195,6 @@
                         <tr bgcolor="#9acd32">
                             <th>Organization</th>
                             <th>Degree</th>
-                            <th>Course</th>
                             <th>End Date</th>
                         </tr>
                         <!-- if at least 1 "activities:educations/education:education-summary" exists -->
@@ -203,7 +202,9 @@
                             <xsl:for-each
                                     select="record:record/activities:activities-summary/activities:educations/activities:affiliation-group/education:education-summary">
                                 <xsl:sort select="common:organization/common:name" data-type="text"/>
+                                <!-- sort with end  AND start dates, in case there are records with the same end-date -->
                                 <xsl:sort select="common:end-date/common:year" data-type="number" order="descending"/>
+                                <xsl:sort select="common:start-date/common:year" data-type="number" order="descending"/>
                                 <tr>
                                     <td>
                                         <xsl:value-of select="common:organization/common:name"/>
@@ -212,8 +213,6 @@
                                     <td>
                                         <xsl:value-of select="common:role-title"/>
                                     </td>
-                                    <!-- Course/title -->
-                                    <td>???</td>
                                     <td>
                                         <xsl:value-of select="common:end-date/common:year"/>
                                     </td>
@@ -244,6 +243,8 @@
                             <xsl:for-each
                                     select="record:record/activities:activities-summary/activities:employments/activities:affiliation-group/employment:employment-summary">
                                 <xsl:sort select="common:organization/common:name" data-type="text"/>
+                                <!-- sort with end  AND start dates, in case there are records with the same end-date -->
+                                <xsl:sort select="common:end-date/common:year" data-type="number" order="descending"/>
                                 <xsl:sort select="common:start-date/common:year" data-type="number" order="descending"/>
                                 <tr>
                                     <td>
