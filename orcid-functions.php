@@ -60,6 +60,8 @@ function format_orcid_data_as_html($orcid_xml, $display_sections){
     $html_doc->setParameter('', 'display_education', $display_sections['display_education']);
     $html_doc->setParameter('', 'display_employment', $display_sections['display_employment']);
     $html_doc->setParameter('', 'display_works', $display_sections['display_works']);
+    $html_doc->setParameter('', 'works_type', $display_sections['works_type']);
+    $html_doc->setParameter('', 'works_start_year', $display_sections['works_start_year']);
     $html_doc->setParameter('', 'display_fundings', $display_sections['display_fundings']);
 	$html_doc->setParameter('', 'display_peer_reviews', $display_sections['display_peer_reviews']);
 	$html_doc->setParameter('', 'display_invited_positions', $display_sections['display_invited_positions']);
@@ -83,12 +85,30 @@ function format_orcid_data_as_html($orcid_xml, $display_sections){
  *
  */
 function orcid_data_function($atts) {
+    // normalize attribute keys, lowercase
+    $atts = array_change_key_case((array)$atts, CASE_LOWER);
+
+    //
+    // override default attributes with user attributes
+    // extract() converts a dictionary to a set of variables
+    //
+    // section: which section of the orcid data to display.
+    // if no section is specified display the header by default
+    // for works section
+    // works_type
+    // works_start_year: include all works with publish year >= works_start_year
+    extract(shortcode_atts(
+            array(
+                'section' => 'header',
+                'works_type' => 'all',
+                'works_start_year' => '1900',
+            ),
+            $atts
+        )
+    );
+
 	//
-	// which section of the orcid data to display.
-	//if no section is specified display the header by default
-	extract(shortcode_atts(array('section' => 'header',), $atts));
-	//
-	// now we want to display the *author's* (not the viewer's) data
+	// we want to display the *AUTHOR's* (NOT the viewer's) data
 
 	//
 	// get the author's WordPress user id
@@ -167,9 +187,13 @@ function orcid_data_function($atts) {
 		$display_sections['display_employment'] = 'no';
 	}
 	if ($section == 'works') {
-		$display_sections['display_works'] = 'yes';
+        $display_sections['display_works'] = 'yes';
+        $display_sections['works_type'] = $works_type;
+        $display_sections['works_start_year'] = $works_start_year;
 	} else {
 		$display_sections['display_works'] = 'no';
+        $display_sections['works_type'] = 'all';
+        $display_sections['works_start_year'] = '1900';
 	}
 	if ($section == 'fundings') {
 		$display_sections['display_fundings'] = 'yes';
@@ -249,7 +273,11 @@ function orcid_display_orcid_data($orcid_xml)
     $display_sections['display_personal'] = 'yes';
     $display_sections['display_education'] = 'yes';
     $display_sections['display_employment'] = 'yes';
+    //
     $display_sections['display_works'] = 'yes';
+    $display_sections['works_type'] = 'all';
+    $display_sections['works_start_year'] = '1900';
+    //
     $display_sections['display_fundings'] = 'yes';
     $display_sections['display_peer_reviews'] = 'yes';
     $display_sections['display_invited_positions'] = 'yes';

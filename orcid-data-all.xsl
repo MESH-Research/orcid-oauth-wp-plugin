@@ -35,6 +35,10 @@
     <xsl:param name="display_education" select="'yes'"/>
     <xsl:param name="display_employment" select="'yes'"/>
     <xsl:param name="display_works" select="'yes'"/>
+    <!-- WP shortcode parameters that go with works section -->
+    <xsl:param name="works_type" select="'all'"/>
+    <xsl:param name="works_start_year" select="'1900'"/>
+    <!-- -->
     <xsl:param name="display_fundings" select="'yes'"/>
     <xsl:param name="display_peer_reviews" select="'yes'"/>
     <xsl:param name="display_invited_positions" select="'yes'"/>
@@ -292,34 +296,47 @@
                                 <xsl:sort select="work:work-summary/work:type" data-type="text"/>
                                 <xsl:sort select="work:work-summary/common:publication-date/common:year"
                                           data-type="number" order="descending"/>
-                                <tr>
-                                    <td>
-                                        <xsl:value-of select="work:work-summary/work:type"/>
-                                    </td>
-                                    <td>
-                                        <xsl:value-of select="work:work-summary/work:title/common:title"/>
-                                    </td>
-                                    <td>
-                                        <xsl:value-of select="work:work-summary/work:journal-title"/>
-                                    </td>
-                                    <td>
-                                        <xsl:value-of select="work:work-summary/common:publication-date/common:year"/>
-                                    </td>
-                                    <!-- if at least 1 "common:external-ids/common:external-id" exists -->
-                                    <td>
-                                        <xsl:if test="work:work-summary/common:external-ids/common:external-id">
-                                            <!-- we only want the URLs-->
-                                            <xsl:for-each
-                                                    select="work:work-summary/common:external-ids/common:external-id">
-                                                <!-- there may be multiple values so stick in a <br> -->
-                                                <xsl:value-of select="common:external-id-url"/>
-                                                <xsl:if test="common:external-id-url">
-                                                    <br/>
+                                <!-- -->
+                                <!-- IF statement(s) here as a filter -->
+                                <!-- work type -->
+                                <xsl:if test="$works_type='all' or $works_type=work:work-summary/work:type">
+                                    <!-- publication year-->
+                                    <!-- there's no >= so we need to do > OR = in 2 parts -->
+                                    <xsl:if
+                                            test="work:work-summary/common:publication-date/common:year &gt; $works_start_year
+                                        or
+                                        work:work-summary/common:publication-date/common:year = $works_start_year">
+                                        <tr>
+                                            <td>
+                                                <xsl:value-of select="work:work-summary/work:type"/>
+                                            </td>
+                                            <td>
+                                                <xsl:value-of select="work:work-summary/work:title/common:title"/>
+                                            </td>
+                                            <td>
+                                                <xsl:value-of select="work:work-summary/work:journal-title"/>
+                                            </td>
+                                            <td>
+                                                <xsl:value-of select="work:work-summary/common:publication-date/common:year"/>
+                                            </td>
+                                            <!-- if at least 1 "common:external-ids/common:external-id" exists -->
+                                            <td>
+                                                <xsl:if test="work:work-summary/common:external-ids/common:external-id">
+                                                    <!-- we only want the URLs-->
+                                                    <xsl:for-each
+                                                            select="work:work-summary/common:external-ids/common:external-id">
+                                                        <!-- there may be multiple values so stick in a <br> -->
+                                                        <xsl:value-of select="common:external-id-url"/>
+                                                        <xsl:if test="common:external-id-url">
+                                                            <br/>
+                                                        </xsl:if>
+                                                    </xsl:for-each>
                                                 </xsl:if>
-                                            </xsl:for-each>
-                                        </xsl:if>
-                                    </td>
-                                </tr>
+                                            </td>
+                                        </tr>
+                                    </xsl:if>
+                                </xsl:if>
+                                <!-- end IF filters -->
                             </xsl:for-each>
                         </xsl:if>
                     </table>
