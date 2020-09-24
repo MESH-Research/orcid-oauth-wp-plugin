@@ -40,10 +40,10 @@ function download_orcid_data($user, $orcid_id, $orcid_access_token){
  *
  * parameters:
  * @param string $orcid_xml - XML as string
- * @param array $display_sections - which sections of orcid data to display
+ * @param array $display_parameters - what and how the ORCiD XML data will be displayed
  * @return string orcid_html
  */
-function format_orcid_data_as_html($orcid_xml, $display_sections){
+function format_orcid_data_as_html($orcid_xml, $display_parameters){
     $xml_doc = new DOMDocument();
     $xml_doc->loadXML($orcid_xml);
 
@@ -54,21 +54,21 @@ function format_orcid_data_as_html($orcid_xml, $display_sections){
 
     //
     // control which sections are displayed
-	$html_doc->setParameter('', 'display_header', $display_sections['display_header']);
+	$html_doc->setParameter('', 'display_header', $display_parameters['display_header']);
 	// $html_doc->setParameter('', 'display_header', 'yes');
-	$html_doc->setParameter('', 'display_personal', $display_sections['display_personal']);
-    $html_doc->setParameter('', 'display_education', $display_sections['display_education']);
-    $html_doc->setParameter('', 'display_employment', $display_sections['display_employment']);
-    $html_doc->setParameter('', 'display_works', $display_sections['display_works']);
-    $html_doc->setParameter('', 'works_type', $display_sections['works_type']);
-    $html_doc->setParameter('', 'works_start_year', $display_sections['works_start_year']);
-    $html_doc->setParameter('', 'display_fundings', $display_sections['display_fundings']);
-	$html_doc->setParameter('', 'display_peer_reviews', $display_sections['display_peer_reviews']);
-	$html_doc->setParameter('', 'display_invited_positions', $display_sections['display_invited_positions']);
-	$html_doc->setParameter('', 'display_memberships', $display_sections['display_memberships']);
-	$html_doc->setParameter('', 'display_qualifications', $display_sections['display_qualifications']);
-	$html_doc->setParameter('', 'display_research_resources', $display_sections['display_research_resources']);
-	$html_doc->setParameter('', 'display_services', $display_sections['display_services']);
+	$html_doc->setParameter('', 'display_personal', $display_parameters['display_personal']);
+    $html_doc->setParameter('', 'display_education', $display_parameters['display_education']);
+    $html_doc->setParameter('', 'display_employment', $display_parameters['display_employment']);
+    $html_doc->setParameter('', 'display_works', $display_parameters['display_works']);
+    $html_doc->setParameter('', 'works_type', $display_parameters['works_type']);
+    $html_doc->setParameter('', 'works_start_year', $display_parameters['works_start_year']);
+    $html_doc->setParameter('', 'display_fundings', $display_parameters['display_fundings']);
+	$html_doc->setParameter('', 'display_peer_reviews', $display_parameters['display_peer_reviews']);
+	$html_doc->setParameter('', 'display_invited_positions', $display_parameters['display_invited_positions']);
+	$html_doc->setParameter('', 'display_memberships', $display_parameters['display_memberships']);
+	$html_doc->setParameter('', 'display_qualifications', $display_parameters['display_qualifications']);
+	$html_doc->setParameter('', 'display_research_resources', $display_parameters['display_research_resources']);
+	$html_doc->setParameter('', 'display_services', $display_parameters['display_services']);
 
     $html_doc->importStylesheet($xsl_doc);
     $orcid_html =  $html_doc->transformToXML($xml_doc);
@@ -167,72 +167,72 @@ function orcid_data_function($atts) {
 	//
 	// determine which section to display
 	if ($section == 'header') {
-		$display_sections['display_header'] = 'yes';
+		$display_parameters['display_header'] = 'yes';
 	} else {
-		$display_sections['display_header'] = 'no';
+		$display_parameters['display_header'] = 'no';
 	}
 	if ($section == 'personal') {
-		$display_sections['display_personal'] = 'yes';
+		$display_parameters['display_personal'] = 'yes';
 	} else {
-		$display_sections['display_personal'] = 'no';
+		$display_parameters['display_personal'] = 'no';
 	}
 	if ($section == 'education') {
-		$display_sections['display_education'] = 'yes';
+		$display_parameters['display_education'] = 'yes';
 	} else {
-		$display_sections['display_education'] = 'no';
+		$display_parameters['display_education'] = 'no';
 	}
 	if ($section == 'employment') {
-		$display_sections['display_employment'] = 'yes';
+		$display_parameters['display_employment'] = 'yes';
 	} else {
-		$display_sections['display_employment'] = 'no';
+		$display_parameters['display_employment'] = 'no';
 	}
 	if ($section == 'works') {
-        $display_sections['display_works'] = 'yes';
-        $display_sections['works_type'] = $works_type;
-        $display_sections['works_start_year'] = $works_start_year;
+        $display_parameters['display_works'] = 'yes';
+        $display_parameters['works_type'] = $works_type;
+        $display_parameters['works_start_year'] = $works_start_year;
 	} else {
-		$display_sections['display_works'] = 'no';
-        $display_sections['works_type'] = 'all';
-        $display_sections['works_start_year'] = '1900';
+		$display_parameters['display_works'] = 'no';
+        $display_parameters['works_type'] = 'all';
+        $display_parameters['works_start_year'] = '1900';
 	}
 	if ($section == 'fundings') {
-		$display_sections['display_fundings'] = 'yes';
+		$display_parameters['display_fundings'] = 'yes';
 	} else {
-		$display_sections['display_fundings'] = 'no';
+		$display_parameters['display_fundings'] = 'no';
 	}
 	if ($section == 'peer_reviews') {
-		$display_sections['display_peer_reviews'] = 'yes';
+		$display_parameters['display_peer_reviews'] = 'yes';
 	} else {
-		$display_sections['display_peer_reviews'] = 'no';
+		$display_parameters['display_peer_reviews'] = 'no';
 	}
 	if ($section == 'invited_positions') {
-		$display_sections['display_invited_positions'] = 'yes';
+		$display_parameters['display_invited_positions'] = 'yes';
 	} else {
-		$display_sections['display_invited_positions'] = 'no';
+		$display_parameters['display_invited_positions'] = 'no';
 	}
 	if ($section == 'memberships') {
-		$display_sections['display_memberships'] = 'yes';
+		$display_parameters['display_memberships'] = 'yes';
 	} else {
-		$display_sections['display_memberships'] = 'no';
+		$display_parameters['display_memberships'] = 'no';
 	}
 	if ($section == 'qualifications') {
-		$display_sections['display_qualifications'] = 'yes';
+		$display_parameters['display_qualifications'] = 'yes';
 	} else {
-		$display_sections['display_qualifications'] = 'no';
+		$display_parameters['display_qualifications'] = 'no';
 	}
 	if ($section == 'research_resources') {
-		$display_sections['display_research_resources'] = 'yes';
+		$display_parameters['display_research_resources'] = 'yes';
 	} else {
-		$display_sections['display_research_resources'] = 'no';
+		$display_parameters['display_research_resources'] = 'no';
 	}
 	if ($section == 'services') {
-		$display_sections['display_services'] = 'yes';
+		$display_parameters['display_services'] = 'yes';
 	} else {
-		$display_sections['display_services'] = 'no';
+		$display_parameters['display_services'] = 'no';
 	}
 	//
 	// format as HTML
-	$orcid_html = format_orcid_data_as_html($orcid_xml, $display_sections);
+	$orcid_html = format_orcid_data_as_html($orcid_xml, $display_parameters);
 	return $orcid_html;
 }
 
@@ -269,24 +269,24 @@ function orcid_display_orcid_data($orcid_xml)
 {
 
     // set which sections to display
-    $display_sections['display_header'] = 'yes';
-    $display_sections['display_personal'] = 'yes';
-    $display_sections['display_education'] = 'yes';
-    $display_sections['display_employment'] = 'yes';
+    $display_parameters['display_header'] = 'yes';
+    $display_parameters['display_personal'] = 'yes';
+    $display_parameters['display_education'] = 'yes';
+    $display_parameters['display_employment'] = 'yes';
     //
-    $display_sections['display_works'] = 'yes';
-    $display_sections['works_type'] = 'all';
-    $display_sections['works_start_year'] = '1900';
+    $display_parameters['display_works'] = 'yes';
+    $display_parameters['works_type'] = 'all';
+    $display_parameters['works_start_year'] = '1900';
     //
-    $display_sections['display_fundings'] = 'yes';
-    $display_sections['display_peer_reviews'] = 'yes';
-    $display_sections['display_invited_positions'] = 'yes';
-    $display_sections['display_memberships'] = 'yes';
-    $display_sections['display_qualifications'] = 'yes';
-    $display_sections['display_research_resources'] = 'yes';
-    $display_sections['display_services'] = 'yes';
+    $display_parameters['display_fundings'] = 'yes';
+    $display_parameters['display_peer_reviews'] = 'yes';
+    $display_parameters['display_invited_positions'] = 'yes';
+    $display_parameters['display_memberships'] = 'yes';
+    $display_parameters['display_qualifications'] = 'yes';
+    $display_parameters['display_research_resources'] = 'yes';
+    $display_parameters['display_services'] = 'yes';
 
-    $orcid_html = format_orcid_data_as_html($orcid_xml, $display_sections);
+    $orcid_html = format_orcid_data_as_html($orcid_xml, $display_parameters);
     echo $orcid_html;
 }
 // for testing
