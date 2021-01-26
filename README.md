@@ -2,6 +2,10 @@
 
 ORCiD plugin for WordPress with OAuth Authentication.
 
+## GUI Install Instructions
+- Download the zip package from this site
+- Go to the plugins page on your Wordpress site and use the "Add New" and "Upload Plugin" to upload the plugin
+- Activate once it's installed
 
 ## Install Instructions
 
