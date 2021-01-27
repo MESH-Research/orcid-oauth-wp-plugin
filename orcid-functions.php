@@ -245,8 +245,9 @@ function orcid_data_function($atts) {
  */
 function orcid_display_login_button()
 {
-    // sandbox api: 'https://sandbox.orcid.org/oauth/authorize?'
-    // public api:  'https://orcid.org/oauth/authorize?'
+    // sandbox
+    //$orcid_request_uri = 'https://sandbox.orcid.org/oauth/authorize?' .
+    // public
     $orcid_request_uri = 'https://orcid.org/oauth/authorize?' .
         'client_id=' . ORCID_OAUTH_CLIENT_ID . '&' .
         'response_type=code&' .
